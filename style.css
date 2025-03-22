@@ -8,6 +8,7 @@ body {
 
 button {
 	width: 90px;
+	cursor: pointer;
 }
 
 .center {
