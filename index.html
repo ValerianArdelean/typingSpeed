@@ -6,7 +6,7 @@
 	<title>typingSpeed</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="auto">
 	<header class="center">
 		<h1>Typing Speed Test</h1>
 		<h2> Find out how many letters and words you can type per minute </h2>
@@ -14,22 +14,25 @@
 
 	<main>
 		
-		<section class="flex">
-			<p> Duration of the test:</p>
-			<button>1</button>
-			<button>2</button>
-			<button>3</button>
+		<section class="auto center">
+			<p>Duration of the test:</p>
+			<div class="flex">
+				<button aria-label="Set duration to 1 minute">1</button>
+				<button aria-label="Set duration to 2 minutes">2</button>
+				<button aria-label="Set duration to 3 minutes">3</button>
+			</div>
 		</section>
 		<section>
 			<p class="center">
 				Please typewrite the following text. The countdown will begin to run with your first key stroke.
 			</p>
-			<div class="flex">
-				<aside>
-				</aside>
+			<section class="flex">
+				<div role="timer" aria-live="polite">
+					60
+				</div>
 				<form>
 				</form>
-			<div>
+			</section>
 		</section>
 
 	</main>
