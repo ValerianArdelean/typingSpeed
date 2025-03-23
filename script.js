@@ -4,19 +4,20 @@ const sentences = [
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
 
-function createSentence() {
+function createSentence(size) {
 	sentenceHolder = document.getElementById("sentence");
-	for (let i = 0; i < sentences[0].length; ++i) {
+	for (let i = 0; i < sentences[size].length; ++i) {
 		let letter = document.createElement("span");
-		letter.textContent = sentences[0][i];
+		letter.textContent = sentences[size][i];
 		letter.id = `${i}`;
 		letter.classList.add("letters");
 		sentenceHolder.appendChild(letter);
 	}
 }
 
+createSentence(0);
 
-let index = 230;
+let index = 0;
 document.addEventListener("keydown", function (event) {
 	if (index >= sentences[0].length) return;
 	let letter = document.getElementById(index);
@@ -34,7 +35,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 function checkCompletion() {
-	if (index === sentence.length) {
+	if (index === sentences[0].length) {
 		console.log("Sentence typed correctly!");
 		alert("Well done! You typed the sentence correctly.");
 	}
