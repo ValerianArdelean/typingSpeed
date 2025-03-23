@@ -26,7 +26,12 @@ function checkCompletion() {
 
 function startGame() {
 	document.addEventListener("keydown", function (event) {
-		if (index >= sentences[0].length) return;
+		console.log('Key pressed:', event.key);
+		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+		if (index >= sentences[0].length ||
+			excludedKeys.includes(event.key.toLowerCase())) {
+			return;
+		}
 		let letter = document.getElementById(index);
 		if (index > 0) {
 			document.getElementById(index - 1).classList.remove("green");
