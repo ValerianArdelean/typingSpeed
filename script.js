@@ -20,6 +20,7 @@ function createSentence(size) {
 		letter.classList.add("letters");
 		sentenceHolder.appendChild(letter);
 	}
+	document.getElementById(index).classList.add("orange");
 }
 
 function startTimer() {
@@ -46,6 +47,7 @@ function checkCompletion() {
 }
 
 function startGame() {
+	
 	document.addEventListener("keydown", function (event) {
 		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
 		if (index >= SENTENCES[0].length ||
@@ -59,7 +61,7 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
-		if (event.key === SENTENCES[0][index]) {
+		if (event.key === SENTENCES[testDuration - 1][index]) {
 			letter.classList.remove("orange", "red");
 			checkCompletion();
 			++index;
