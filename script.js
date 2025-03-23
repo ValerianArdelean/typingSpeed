@@ -4,6 +4,7 @@ const sentences = [
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
 let index = 0;
+let start = false;
 
 function createSentence(size) {
 	sentenceHolder = document.getElementById("sentence");
@@ -17,6 +18,20 @@ function createSentence(size) {
 	}
 }
 
+function startTimer() {
+	const MINUTE_IN_SECONDS = 60;
+	const SECOND_IN_MILLISECONDS = 1000;
+	let elapsed = 60;
+	let minutes = 0;
+	let seconds = 0;
+	timeInterval = setInterval(() => {
+		--elapsed;
+		minutes = String(Math.floor(elapsed / MINUTE_IN_SECONDS)).padStart(2, '0');
+		seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
+		document.getElementById("time").innerText = `${minutes}:${seconds}`;
+	}, SECOND_IN_MILLISECONDS);
+}
+
 function checkCompletion() {
 	if (index === sentences[0].length) {
 		console.log("Sentence typed correctly!");
@@ -26,12 +41,16 @@ function checkCompletion() {
 
 function startGame() {
 	document.addEventListener("keydown", function (event) {
-		console.log('Key pressed:', event.key);
 		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
 		if (index >= sentences[0].length ||
 			excludedKeys.includes(event.key.toLowerCase())) {
 			return;
 		}
+		if (!start) {
+			start = true;
+			startTimer();
+		}
+		
 		let letter = document.getElementById(index);
 		if (index > 0) {
 			document.getElementById(index - 1).classList.remove("green");
@@ -48,6 +67,3 @@ function startGame() {
 }
 
 startGame();
-
-
-
