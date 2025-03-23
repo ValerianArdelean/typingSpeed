@@ -11,7 +11,6 @@ let time = document.getElementById("time");
 function createSentence(size) {
 	startTime = size + 1;
 	time.innerText = `${60 * startTime}`;
-	console.log(startTime);
 	sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
 	for (let i = 0; i < SENTENCES[size].length; ++i) {
@@ -26,7 +25,7 @@ function createSentence(size) {
 function startTimer() {
 	const MINUTE_IN_SECONDS = 60;
 	const SECOND_IN_MILLISECONDS = 1000;
-	let elapsed = 60 * startTime;
+	let elapsed = MINUTE_IN_SECONDS * startTime;
 	timeInterval = setInterval(() => {
 		--elapsed;
 		let seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
