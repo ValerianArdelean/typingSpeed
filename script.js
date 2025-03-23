@@ -5,8 +5,13 @@ const sentences = [
 ];
 let index = 0;
 let start = false;
+let startTime = 0;
+let time = document.getElementById("time");
 
 function createSentence(size) {
+	startTime = size + 1;
+	time.innerText = `${60 * startTime}`;
+	console.log(startTime);
 	sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
 	for (let i = 0; i < sentences[size].length; ++i) {
@@ -21,14 +26,12 @@ function createSentence(size) {
 function startTimer() {
 	const MINUTE_IN_SECONDS = 60;
 	const SECOND_IN_MILLISECONDS = 1000;
-	let elapsed = 60;
-	let minutes = 0;
+	let elapsed = 60 * startTime;
 	let seconds = 0;
 	timeInterval = setInterval(() => {
 		--elapsed;
-		minutes = String(Math.floor(elapsed / MINUTE_IN_SECONDS)).padStart(2, '0');
 		seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
-		document.getElementById("time").innerText = `${minutes}:${seconds}`;
+		time.innerText = `${seconds}`;
 	}, SECOND_IN_MILLISECONDS);
 }
 
