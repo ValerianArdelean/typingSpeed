@@ -6,6 +6,7 @@ const sentences = [
 
 function createSentence(size) {
 	sentenceHolder = document.getElementById("sentence");
+	sentenceHolder.innerHTML = "";
 	for (let i = 0; i < sentences[size].length; ++i) {
 		let letter = document.createElement("span");
 		letter.textContent = sentences[size][i];
@@ -14,8 +15,6 @@ function createSentence(size) {
 		sentenceHolder.appendChild(letter);
 	}
 }
-
-createSentence(0);
 
 let index = 0;
 document.addEventListener("keydown", function (event) {
