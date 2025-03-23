@@ -1,4 +1,4 @@
-const sentences = [
+const SENTENCES = [
 	"Typing is an essential skill in the modern world, where digital communication is ubiquitous; by practicing regularly, you can greatly improve your speed and accuracy, which will benefit you in both personal and professional contexts.",
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
@@ -14,9 +14,9 @@ function createSentence(size) {
 	console.log(startTime);
 	sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
-	for (let i = 0; i < sentences[size].length; ++i) {
+	for (let i = 0; i < SENTENCES[size].length; ++i) {
 		let letter = document.createElement("span");
-		letter.textContent = sentences[size][i];
+		letter.textContent = SENTENCES[size][i];
 		letter.id = `${i}`;
 		letter.classList.add("letters");
 		sentenceHolder.appendChild(letter);
@@ -27,16 +27,20 @@ function startTimer() {
 	const MINUTE_IN_SECONDS = 60;
 	const SECOND_IN_MILLISECONDS = 1000;
 	let elapsed = 60 * startTime;
-	let seconds = 0;
 	timeInterval = setInterval(() => {
 		--elapsed;
-		seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
+		let seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
 		time.innerText = `${seconds}`;
+		if (elapsed < 1) {
+			clearInterval(timeInterval);
+			return;
+		}
 	}, SECOND_IN_MILLISECONDS);
+
 }
 
 function checkCompletion() {
-	if (index === sentences[0].length) {
+	if (index === SENTENCES[0].length) {
 		console.log("Sentence typed correctly!");
 		alert("Well done! You typed the sentence correctly.");
 	}
@@ -45,24 +49,22 @@ function checkCompletion() {
 function startGame() {
 	document.addEventListener("keydown", function (event) {
 		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
-		if (index >= sentences[0].length ||
+		if (index >= SENTENCES[0].length ||
 			excludedKeys.includes(event.key.toLowerCase())) {
 			return;
 		}
+		
 		if (!start) {
 			start = true;
 			startTimer();
 		}
 		
 		let letter = document.getElementById(index);
-		if (index > 0) {
-			document.getElementById(index - 1).classList.remove("green");
-		}
-		letter.classList.remove("green", "red");
-		if (event.key === sentences[0][index]) {
-			letter.classList.add("green");
-			++index;
+		if (event.key === SENTENCES[0][index]) {
+			letter.classList.remove("orange", "red");
 			checkCompletion();
+			++index;
+			document.getElementById(index).classList.add("orange");
 		} else {
 			letter.classList.add("red");
 		}
