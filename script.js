@@ -70,4 +70,13 @@ function startGame() {
 	});
 }
 
+function restart() {
+	document.getElementById(index).classList.remove("orange", "red");
+	index = 0;
+	start = false;
+	clearInterval(timeInterval);
+	time.innerText = `${60 * testDuration}`;
+	document.getElementById(index).classList.add("orange");
+}
+
 startGame();
