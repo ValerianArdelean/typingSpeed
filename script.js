@@ -7,7 +7,7 @@ let index = 0;
 let start = false;
 let testDuration = 0;
 let time = document.getElementById("time");
-
+let gameOver = false;
 function createSentence(size) {
 	testDuration = size + 1;
 	time.innerText = `${60 * testDuration}`;
@@ -39,18 +39,11 @@ function startTimer() {
 
 }
 
-function checkCompletion() {
-	if (index === SENTENCES[0].length) {
-		console.log("Sentence typed correctly!");
-		alert("Well done! You typed the sentence correctly.");
-	}
-}
-
 function startGame() {
 	
 	document.addEventListener("keydown", function (event) {
 		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
-		if (index >= SENTENCES[0].length ||
+		if (index >= SENTENCES[testDuration - 1].length ||
 			excludedKeys.includes(event.key.toLowerCase())) {
 			return;
 		}
@@ -61,12 +54,18 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
+		console.log(index, SENTENCES[testDuration - 1].length, gameOver);
 		if (event.key === SENTENCES[testDuration - 1][index]) {
-			letter.classList.remove("orange", "red");
-			checkCompletion();
-			++index;
-			document.getElementById(index).classList.add("orange");
-		} else {
+			
+			if (index < (SENTENCES[testDuration - 1].length) - 1) {
+				letter.classList.remove("orange", "red");
+				++index;
+				document.getElementById(index).classList.add("orange");
+			} else {
+				gameOver = true;
+				document.getElementById("information").innerText = "Congrats, you typed the whole sentence";
+			}
+		} else if (!gameOver) {
 			letter.classList.add("red");
 		}
 	});
