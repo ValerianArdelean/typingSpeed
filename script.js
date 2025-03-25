@@ -3,11 +3,10 @@ const SENTENCES = [
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
-let index = 0;
+let index = 230;
 let start = false;
 let testDuration = 0;
 let time = document.getElementById("time");
-let gameOver = false;
 function createSentence(size) {
 	testDuration = size + 1;
 	time.innerText = `${60 * testDuration}`;
@@ -36,17 +35,11 @@ function startTimer() {
 			return;
 		}
 	}, SECOND_IN_MILLISECONDS);
-
 }
 
 function startGame() {
-	
 	document.addEventListener("keydown", function (event) {
 		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
-		if (index >= SENTENCES[testDuration - 1].length ||
-			excludedKeys.includes(event.key.toLowerCase())) {
-			return;
-		}
 		
 		if (!start) {
 			start = true;
@@ -54,30 +47,27 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
-		console.log(index, SENTENCES[testDuration - 1].length, gameOver);
-		if (event.key === SENTENCES[testDuration - 1][index]) {
-			
-			if (index < (SENTENCES[testDuration - 1].length) - 1) {
-				letter.classList.remove("orange", "red");
-				++index;
+		if (event.key === SENTENCES[testDuration - 1][index] && !excludedKeys.includes(event.key.toLowerCase())) {
+			letter.classList.remove("orange", "red");
+			++index;
+			if (index < (SENTENCES[testDuration - 1].length)) {
 				document.getElementById(index).classList.add("orange");
 			} else {
-				gameOver = true;
 				document.getElementById("information").innerText = "Congrats, you typed the whole sentence";
 			}
-		} else if (!gameOver) {
+		} else if (index < (SENTENCES[testDuration - 1].length)) {
 			letter.classList.add("red");
 		}
 	});
 }
 
 function restart() {
-	document.getElementById(index).classList.remove("orange", "red");
 	index = 0;
 	start = false;
 	clearInterval(timeInterval);
 	time.innerText = `${60 * testDuration}`;
 	document.getElementById(index).classList.add("orange");
+	document.getElementById("information").innerText = "Typos can be corrected by simply typing the correct letter.";
 }
 
 startGame();
