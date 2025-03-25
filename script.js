@@ -26,7 +26,7 @@ function createSentence(size) {
 }
 
 function startTimer() {
-	const MINUTE_IN_SECONDS = 60;
+	const MINUTE_IN_SECONDS = 60 * testDuration;
 	const SECOND_IN_MILLISECONDS = 1000;
 	let elapsed = MINUTE_IN_SECONDS * testDuration;
 	timeInterval = setInterval(() => {
