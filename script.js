@@ -39,7 +39,7 @@ function startTimer() {
 
 function startGame() {
 	document.addEventListener("keydown", function (event) {
-		const excludedKeys = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+		const EXCLUDED_KEYS = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
 		
 		if (!start) {
 			start = true;
@@ -47,7 +47,7 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
-		if (event.key === SENTENCES[testDuration - 1][index] && !excludedKeys.includes(event.key.toLowerCase())) {
+		if (event.key === SENTENCES[testDuration - 1][index] && !EXCLUDED_KEYS.includes(event.key.toLowerCase())) {
 			letter.classList.remove("orange", "red");
 			++index;
 			if (index < (SENTENCES[testDuration - 1].length)) {
