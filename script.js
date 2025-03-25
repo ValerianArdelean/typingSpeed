@@ -56,7 +56,6 @@ function startGame() {
 			if (index < (SENTENCES[testDuration - 1].length)) {
 				document.getElementById(index).classList.add("orange");
 			} else {
-				start = false;
 				clearInterval(timeInterval);
 				info1.innerText = "Press restart, or refresh the page!";
 				info2.innerText = "Congrats, you typed the whole sentence";
