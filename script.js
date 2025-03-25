@@ -7,6 +7,9 @@ let index = 230;
 let start = false;
 let testDuration = 0;
 let time = document.getElementById("time");
+let info1 = document.getElementById("info1");
+let info2 = document.getElementById("info2");
+
 function createSentence(size) {
 	testDuration = size + 1;
 	time.innerText = `${60 * testDuration}`;
@@ -53,7 +56,11 @@ function startGame() {
 			if (index < (SENTENCES[testDuration - 1].length)) {
 				document.getElementById(index).classList.add("orange");
 			} else {
-				document.getElementById("information").innerText = "Congrats, you typed the whole sentence";
+				start = false;
+				clearInterval(timeInterval);
+				info1.innerText = "Press restart, or refresh the page!";
+				info2.innerText = "Congrats, you typed the whole sentence";
+				
 			}
 		} else if (index < (SENTENCES[testDuration - 1].length)) {
 			letter.classList.add("red");
@@ -67,7 +74,8 @@ function restart() {
 	clearInterval(timeInterval);
 	time.innerText = `${60 * testDuration}`;
 	document.getElementById(index).classList.add("orange");
-	document.getElementById("information").innerText = "Typos can be corrected by simply typing the correct letter.";
+	info1.innerText = "The countdown will begin to run with your first key stroke.";
+	info2.innerText = "Typos can be corrected by simply typing the correct letter.";
 }
 
 startGame();
