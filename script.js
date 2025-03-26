@@ -1,8 +1,9 @@
 const SENTENCES = [
+	[35, 55, 67],
 	"Typing is an essential skill in the modern world, where digital communication is ubiquitous; by practicing regularly, you can greatly improve your speed and accuracy, which will benefit you in both personal and professional contexts.",
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
-];//35 cuvinte 55
+];
 let index = 0;
 let start = false;
 let testDuration = 0;
@@ -14,7 +15,7 @@ let info2 = document.getElementById("info2");
 let toAdd = 1;
 
 function createSentence(size) {
-	testDuration = size + 1;
+	testDuration = size;
 	time.innerText = `${60 * testDuration}`;
 	sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
@@ -61,9 +62,9 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
-		if (event.key === SENTENCES[testDuration - 1][index]) {
+		if (event.key === SENTENCES[testDuration][index]) {
 			letter.classList.remove("orange", "red");
-			if (isLetter(SENTENCES[testDuration - 1][index])) {
+			if (isLetter(SENTENCES[testDuration][index])) {
 				++lettersCount;
 			} else if (lettersCount) {
 				lettersCount = 0;
@@ -71,16 +72,16 @@ function startGame() {
 				toAdd = 1;
 			}
 			++index;
-			if (index < (SENTENCES[testDuration - 1].length)) {
+			if (index < (SENTENCES[testDuration].length)) {
 				document.getElementById(index).classList.add("orange");
 			} else {
 				clearInterval(timeInterval);
 				info1.innerText = "Press restart, or refresh the page!";
-				info2.innerText = `Congrats, you typed ${wordsCount} corect words out of ${SENTENCES[testDuration - 1].length}`;
+				info2.innerText = `Congrats, you typed ${wordsCount} corect words out of ${SENTENCES[0][testDuration - 1]}`;
 				console.log(wordsCount);
 				return;
 			}
-		} else if (index < (SENTENCES[testDuration - 1].length)) {
+		} else if (index < (SENTENCES[testDuration].length)) {
 			letter.classList.add("red");
 			toAdd = 0;
 		}
