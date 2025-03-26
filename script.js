@@ -13,6 +13,7 @@ let time = document.getElementById("time");
 let info1 = document.getElementById("info1");
 let info2 = document.getElementById("info2");
 let toAdd = 1;
+let typos = 0;
 
 function createSentence(size) {
 	testDuration = size;
@@ -50,7 +51,9 @@ function isLetter(c) {
 
 function startGame() {
 	document.addEventListener("keydown", function (event) {
-		const EXCLUDED_KEYS = ['shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+		const EXCLUDED_KEYS = ['shift', 'tab', 'control', 'alt',
+							   'meta', 'enter', 'capslock', 'arrowup',
+							   'arrowdown', 'arrowleft', 'arrowright'];
 		
 		if (EXCLUDED_KEYS.includes(event.key.toLowerCase())) {
 			return;
@@ -77,19 +80,26 @@ function startGame() {
 			} else {
 				clearInterval(timeInterval);
 				info1.innerText = "Press restart, or refresh the page!";
-				info2.innerText = `Congrats, you typed ${wordsCount} corect words out of ${SENTENCES[0][testDuration - 1]}`;
+				info2.innerText = `Congrats, you typed ${wordsCount}
+					correct words out of ${SENTENCES[0][testDuration - 1]}.\n
+					You also made ${typos} mistake${typos !== 1 ? 's' : ''}
+					related to punctuation or spacing.`;
 				console.log(wordsCount);
 				return;
 			}
 		} else if (index < (SENTENCES[testDuration].length)) {
 			letter.classList.add("red");
-			toAdd = 0;
+			if (isLetter(SENTENCES[testDuration][index])) {
+				toAdd = 0;
+			} else {
+				++typos;
+			}
 		}
 	});
 }
 
 function restart() {
-	document.getElementById(index).classList.remove("orange", "red");
+	document.getElementById(index - 1).classList.remove("orange", "red");
 	index = 0;
 	document.getElementById(index).classList.add("orange");
 	start = false;
@@ -97,6 +107,10 @@ function restart() {
 	time.innerText = `${60 * testDuration}`;
 	info1.innerText = "The countdown will begin to run with your first key stroke.";
 	info2.innerText = "Typos can be corrected by simply typing the correct letter.";
+	lettersCount = 0;
+	wordsCount = 0;
+	toAdd = 1;
+	typos = 0;
 }
 
 startGame();
