@@ -3,7 +3,7 @@ const SENTENCES = [
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
-let index = 230;
+let index = 0;
 let start = false;
 let testDuration = 0;
 let time = document.getElementById("time");
@@ -68,11 +68,12 @@ function startGame() {
 }
 
 function restart() {
+	document.getElementById(index).classList.remove("orange", "red");
 	index = 0;
+	document.getElementById(index).classList.add("orange");
 	start = false;
 	clearInterval(timeInterval);
 	time.innerText = `${60 * testDuration}`;
-	document.getElementById(index).classList.add("orange");
 	info1.innerText = "The countdown will begin to run with your first key stroke.";
 	info2.innerText = "Typos can be corrected by simply typing the correct letter.";
 }
