@@ -75,10 +75,11 @@ function startGame() {
 			startTimer();
 		}
 		
-		let letter = document.getElementById(index);
+		let currentLetter = document.getElementById(index);
+		let itIsAletter = isLetter(SENTENCES[testType][index]);
 		if (event.key === SENTENCES[testType][index]) {
-			letter.classList.remove("orange", "red");
-			if (isLetter(SENTENCES[testType][index])) {
+			currentLetter.classList.remove("orange", "red");
+			if (itIsAletter) {
 				++lettersCount;
 			} else if (lettersCount) {
 				lettersCount = 0;
@@ -87,14 +88,15 @@ function startGame() {
 			}
 			if (index < (SENTENCES[testType].length - 1)) {
 				++index;
-				document.getElementById(index).classList.add("orange");
+				let nextLetter = document.getElementById(index);
+				nextLetter.classList.add("orange");
 			} else {
 				handleGameOver();
 				return;
 			}
 		} else {
-			letter.classList.add("red");
-			if (isLetter(SENTENCES[testType][index])) {
+			currentLetter.classList.add("red");
+			if (itIsAletter) {
 				isCorrect = 0;
 			} else {
 				++typos;
