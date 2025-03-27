@@ -4,7 +4,7 @@ const SENTENCES = [
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
-let index = 0;
+let index = 230;
 let start = false;
 let testDuration = 0;
 let lettersCount = 0;
@@ -74,20 +74,19 @@ function startGame() {
 				wordsCount += toAdd;
 				toAdd = 1;
 			}
-			++index;
-			if (index < (SENTENCES[testDuration].length)) {
+			if (index < (SENTENCES[testDuration].length - 1)) {
+				++index;
 				document.getElementById(index).classList.add("orange");
 			} else {
 				clearInterval(timeInterval);
 				info1.innerText = "Press restart, or refresh the page!";
 				info2.innerText = `Congrats, you typed ${wordsCount}
-					correct words out of ${SENTENCES[0][testDuration - 1]}.\n
+					correct words out of ${SENTENCES[0][testDuration - 1]}\n
 					You also made ${typos} mistake${typos !== 1 ? 's' : ''}
 					related to punctuation or spacing.`;
-				console.log(wordsCount);
 				return;
 			}
-		} else if (index < (SENTENCES[testDuration].length)) {
+		} else {
 			letter.classList.add("red");
 			if (isLetter(SENTENCES[testDuration][index])) {
 				toAdd = 0;
