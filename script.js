@@ -4,7 +4,7 @@ const SENTENCES = [
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
-let index = 0;
+let index = 220;
 let testType = 0;
 let lettersCount = 0;
 let wordsCount = 0;
@@ -15,8 +15,10 @@ let isGameOver = false;
 let time = document.getElementById("time");
 let info1 = document.getElementById("info1");
 let info2 = document.getElementById("info2");
+let sentenceLength = 0;
 
 function createSentence(size) {
+	sentenceLength = SENTENCES[size].length;
 	testType = size;
 	time.innerText = `${60 * testType}`;
 	sentenceHolder = document.getElementById("sentence");
@@ -36,6 +38,7 @@ function isLetter(c) {
 }
 
 function handleGameOver() {
+	isGameOver = true;
 	clearInterval(timeInterval);
 	info1.innerText = "Press restart, or refresh the page!";
 	info2.innerText = `Congrats, you typed ${wordsCount}
@@ -86,7 +89,7 @@ function startGame() {
 				wordsCount += isCorrect;
 				isCorrect = 1;
 			}
-			if (index < (SENTENCES[testType].length - 1)) {
+			if (index < sentenceLength - 1) {
 				++index;
 				let nextLetter = document.getElementById(index);
 				nextLetter.classList.add("orange");
