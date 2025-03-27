@@ -68,7 +68,7 @@ function startGame() {
 							   'meta', 'enter', 'capslock', 'arrowup',
 							   'arrowdown', 'arrowleft', 'arrowright'];
 		
-		if (EXCLUDED_KEYS.includes(event.key.toLowerCase())) {
+		if (EXCLUDED_KEYS.includes(event.key.toLowerCase()) || gameOver) {
 			return;
 		}
 		
@@ -78,7 +78,7 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
-		if (event.key === SENTENCES[testDuration][index] && !gameOver) {
+		if (event.key === SENTENCES[testDuration][index]) {
 			letter.classList.remove("orange", "red");
 			if (isLetter(SENTENCES[testDuration][index])) {
 				++lettersCount;
@@ -106,10 +106,11 @@ function startGame() {
 }
 
 function restart() {
-	document.getElementById(index - 1).classList.remove("orange", "red");
+	document.getElementById(index).classList.remove("orange", "red");
 	index = 0;
 	document.getElementById(index).classList.add("orange");
 	start = false;
+	gameOver = false;
 	clearInterval(timeInterval);
 	time.innerText = `${60 * testDuration}`;
 	info1.innerText = "The countdown will begin to run with your first key stroke.";
