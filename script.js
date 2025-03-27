@@ -14,6 +14,7 @@ let info1 = document.getElementById("info1");
 let info2 = document.getElementById("info2");
 let toAdd = 1;
 let typos = 0;
+let gameOver = false;
 
 function createSentence(size) {
 	testDuration = size;
@@ -30,6 +31,15 @@ function createSentence(size) {
 	document.getElementById(index).classList.add("orange");
 }
 
+function gameO() {
+	clearInterval(timeInterval);
+	info1.innerText = "Press restart, or refresh the page!";
+	info2.innerText = `Congrats, you typed ${wordsCount}
+		correct words out of ${SENTENCES[0][testDuration - 1]}\n
+		You also made ${typos} mistake${typos !== 1 ? 's' : ''}
+		related to punctuation or spacing.`;
+}
+
 function startTimer() {
 	const MINUTE_IN_SECONDS = 60 * testDuration;
 	const SECOND_IN_MILLISECONDS = 1000;
@@ -39,7 +49,8 @@ function startTimer() {
 		let seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
 		time.innerText = `${seconds}`;
 		if (elapsed < 1) {
-			clearInterval(timeInterval);
+			gameOver = true;
+			gameO();
 			return;
 		}
 	}, SECOND_IN_MILLISECONDS);
@@ -48,6 +59,8 @@ function startTimer() {
 function isLetter(c) {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
+
+
 
 function startGame() {
 	document.addEventListener("keydown", function (event) {
@@ -65,7 +78,7 @@ function startGame() {
 		}
 		
 		let letter = document.getElementById(index);
-		if (event.key === SENTENCES[testDuration][index]) {
+		if (event.key === SENTENCES[testDuration][index] && !gameOver) {
 			letter.classList.remove("orange", "red");
 			if (isLetter(SENTENCES[testDuration][index])) {
 				++lettersCount;
@@ -78,12 +91,7 @@ function startGame() {
 				++index;
 				document.getElementById(index).classList.add("orange");
 			} else {
-				clearInterval(timeInterval);
-				info1.innerText = "Press restart, or refresh the page!";
-				info2.innerText = `Congrats, you typed ${wordsCount}
-					correct words out of ${SENTENCES[0][testDuration - 1]}\n
-					You also made ${typos} mistake${typos !== 1 ? 's' : ''}
-					related to punctuation or spacing.`;
+				gameO();
 				return;
 			}
 		} else {
