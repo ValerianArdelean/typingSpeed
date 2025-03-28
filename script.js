@@ -24,6 +24,9 @@ let game = {
 }
 
 function createSentence(size) {
+	if (game.isGameOver) {
+		return;
+	}
 	game.sentenceLength = SENTENCES[size].length;
 	game.testType = size;
 	game.time.innerText = `${60 * game.testType}`;
