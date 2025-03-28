@@ -4,23 +4,25 @@ const SENTENCES = [
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
-let index = 220;
-let testType = 0;
-let lettersCount = 0;
-let wordsCount = 0;
-let isCorrect = 1;
-let typos = 0;
-let timeStarted = false;
-let isGameOver = false;
-let time = document.getElementById("time");
-let info1 = document.getElementById("info1");
-let info2 = document.getElementById("info2");
-let sentenceLength = 0;
+let game = {
+	index : 220,
+	testType : 0,
+	lettersCount : 0,
+	wordsCount : 0,
+	isCorrect : 1,
+	typos : 0,
+	timeStarted : false,
+	isGameOver : false,
+	time : document.getElementById("time"),
+	info1 : document.getElementById("info1"),
+	info2 : document.getElementById("info2"),
+	sentenceLength : 0
+}
 
 function createSentence(size) {
-	sentenceLength = SENTENCES[size].length;
-	testType = size;
-	time.innerText = `${60 * testType}`;
+	game.sentenceLength = SENTENCES[size].length;
+	game.testType = size;
+	game.time.innerText = `${60 * game.testType}`;
 	sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
 	for (let i = 0; i < SENTENCES[size].length; ++i) {
@@ -30,7 +32,7 @@ function createSentence(size) {
 		letter.classList.add("letters");
 		sentenceHolder.appendChild(letter);
 	}
-	document.getElementById(index).classList.add("orange");
+	document.getElementById(game.index).classList.add("orange");
 }
 
 function isLetter(c) {
@@ -38,25 +40,25 @@ function isLetter(c) {
 }
 
 function handleGameOver() {
-	isGameOver = true;
+	game.isGameOver = true;
 	clearInterval(timeInterval);
-	info1.innerText = "Press restart, or refresh the page!";
-	info2.innerText = `Congrats, you typed ${wordsCount}
-		correct words out of ${SENTENCES[0][testType - 1]}\n
-		You also made ${typos} mistake${typos !== 1 ? 's' : ''}
+	game.info1.innerText = "Press restart, or refresh the page!";
+	game.info2.innerText = `Congrats, you typed ${game.wordsCount}
+		correct words out of ${SENTENCES[0][game.testType - 1]}\n
+		You also made ${game.typos} mistake${game.typos !== 1 ? 's' : ''}
 		in punctuation or spacing.`;
 }
 
 function startTimer() {
-	const MINUTE_IN_SECONDS = 60 * testType;
+	const MINUTE_IN_SECONDS = 60 * game.testType;
 	const SECOND_IN_MILLISECONDS = 1000;
-	let elapsed = MINUTE_IN_SECONDS * testType;
+	let elapsed = MINUTE_IN_SECONDS * game.testType;
 	timeInterval = setInterval(() => {
 		--elapsed;
 		let seconds = String(elapsed % MINUTE_IN_SECONDS).padStart(2, '0');
-		time.innerText = `${seconds}`;
+		game.time.innerText = `${seconds}`;
 		if (elapsed < 1) {
-			isGameOver = true;
+			game.isGameOver = true;
 			handleGameOver();
 			return;
 		}
@@ -69,29 +71,29 @@ function startGame() {
 							   'meta', 'enter', 'capslock', 'arrowup',
 							   'arrowdown', 'arrowleft', 'arrowright'];
 		
-		if (EXCLUDED_KEYS.includes(event.key.toLowerCase()) || isGameOver) {
+		if (EXCLUDED_KEYS.includes(event.key.toLowerCase()) || game.isGameOver) {
 			return;
 		}
 		
-		if (!timeStarted) {
-			timeStarted = true;
+		if (!game.timeStarted) {
+			game.timeStarted = true;
 			startTimer();
 		}
 		
-		let currentLetter = document.getElementById(index);
-		let itIsAletter = isLetter(SENTENCES[testType][index]);
-		if (event.key === SENTENCES[testType][index]) {
+		let currentLetter = document.getElementById(game.index);
+		let itIsAletter = isLetter(SENTENCES[game.testType][game.index]);
+		if (event.key === SENTENCES[game.testType][game.index]) {
 			currentLetter.classList.remove("orange", "red");
 			if (itIsAletter) {
-				++lettersCount;
-			} else if (lettersCount) {
-				lettersCount = 0;
-				wordsCount += isCorrect;
-				isCorrect = 1;
+				++game.lettersCount;
+			} else if (game.lettersCount) {
+				game.lettersCount = 0;
+				game.wordsCount += game.isCorrect;
+				game.isCorrect = 1;
 			}
-			if (index < sentenceLength - 1) {
-				++index;
-				let nextLetter = document.getElementById(index);
+			if (game.index < game.sentenceLength - 1) {
+				++game.index;
+				let nextLetter = document.getElementById(game.index);
 				nextLetter.classList.add("orange");
 			} else {
 				handleGameOver();
@@ -100,28 +102,28 @@ function startGame() {
 		} else {
 			currentLetter.classList.add("red");
 			if (itIsAletter) {
-				isCorrect = 0;
+				game.isCorrect = 0;
 			} else {
-				++typos;
+				++game.typos;
 			}
 		}
 	});
 }
 
 function restart() {
-	document.getElementById(index).classList.remove("orange", "red");
-	index = 0;
-	document.getElementById(index).classList.add("orange");
-	lettersCount = 0;
-	wordsCount = 0;
-	isCorrect = 1;
-	typos = 0;
-	timeStarted = false;
-	isGameOver = false;
+	document.getElementById(game.index).classList.remove("orange", "red");
+	game.index = 0;
+	document.getElementById(game.index).classList.add("orange");
+	game.lettersCount = 0;
+	game.wordsCount = 0;
+	game.isCorrect = 1;
+	game.typos = 0;
+	game.timeStarted = false;
+	game.isGameOver = false;
 	clearInterval(timeInterval);
-	time.innerText = `${60 * testType}`;
-	info1.innerText = "The countdown will begin to run with your first key stroke.";
-	info2.innerText = "Typos can be corrected by simply typing the correct letter.";
+	game.time.innerText = `${60 * game.testType}`;
+	game.info1.innerText = "The countdown will begin to run with your first key stroke.";
+	game.info2.innerText = "Typos can be corrected by simply typing the correct letter.";
 }
 
 startGame();
