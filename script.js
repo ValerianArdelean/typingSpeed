@@ -79,7 +79,7 @@ function handleTime() {
 	}
 }
 
-function countWords(itIsAletter) {
+function countCorrectWords(itIsAletter) {
 	if (itIsAletter) {
 		++game.lettersCount;
 	} else if (game.lettersCount) {
@@ -117,7 +117,6 @@ function startGame() {
 		let itIsAletter = isLetter(SENTENCES[game.testType][game.index]);
 		if (event.key === SENTENCES[game.testType][game.index]) {
 			currentLetter.classList.remove("orange", "red");
-			countWords(itIsAletter);
 			if (game.index < game.sentenceLength - 1) {
 				handleCorrectKey();
 			} else {
@@ -127,6 +126,7 @@ function startGame() {
 		} else {
 			handdleWrongKey(currentLetter, itIsAletter);
 		}
+		countCorrectWords(itIsAletter);
 	});
 }
 
