@@ -7,6 +7,7 @@ const SENTENCES = [
 const EXCLUDED_KEYS = [
 	'shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'
 ];
+
 let game = {
 	index : 0,
 	testType : 0,
