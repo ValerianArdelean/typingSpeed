@@ -4,8 +4,11 @@ const SENTENCES = [
 	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
 	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
 ];
+const EXCLUDED_KEYS = [
+	'shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'
+];
 let game = {
-	index : 220,
+	index : 0,
 	testType : 0,
 	lettersCount : 0,
 	wordsCount : 0,
@@ -65,47 +68,59 @@ function startTimer() {
 	}, SECOND_IN_MILLISECONDS);
 }
 
+function handleTime() {
+	if (!game.timeStarted) {
+		game.timeStarted = true;
+		startTimer();
+	}
+}
+
+function countWords(itIsAletter) {
+	if (itIsAletter) {
+		++game.lettersCount;
+	} else if (game.lettersCount) {
+		game.lettersCount = 0;
+		game.wordsCount += game.isCorrect;
+		game.isCorrect = 1;
+	}
+}
+
+function handleCorrectKey() {
+	++game.index;
+	let nextLetter = document.getElementById(game.index);
+	nextLetter.classList.add("orange");
+}
+
+function handdleWrongKey(element, itIsAletter) {
+	element.classList.add("red");
+	if (itIsAletter) {
+		game.isCorrect = 0;
+	} else {
+		++game.typos;
+	}
+}
+
 function startGame() {
 	document.addEventListener("keydown", function (event) {
-		const EXCLUDED_KEYS = ['shift', 'tab', 'control', 'alt',
-							   'meta', 'enter', 'capslock', 'arrowup',
-							   'arrowdown', 'arrowleft', 'arrowright'];
-		
 		if (EXCLUDED_KEYS.includes(event.key.toLowerCase()) || game.isGameOver) {
 			return;
 		}
 		
-		if (!game.timeStarted) {
-			game.timeStarted = true;
-			startTimer();
-		}
+		handleTime();
 		
 		let currentLetter = document.getElementById(game.index);
 		let itIsAletter = isLetter(SENTENCES[game.testType][game.index]);
 		if (event.key === SENTENCES[game.testType][game.index]) {
 			currentLetter.classList.remove("orange", "red");
-			if (itIsAletter) {
-				++game.lettersCount;
-			} else if (game.lettersCount) {
-				game.lettersCount = 0;
-				game.wordsCount += game.isCorrect;
-				game.isCorrect = 1;
-			}
+			countWords(itIsAletter);
 			if (game.index < game.sentenceLength - 1) {
-				++game.index;
-				let nextLetter = document.getElementById(game.index);
-				nextLetter.classList.add("orange");
+				handleCorrectKey();
 			} else {
 				handleGameOver();
 				return;
 			}
 		} else {
-			currentLetter.classList.add("red");
-			if (itIsAletter) {
-				game.isCorrect = 0;
-			} else {
-				++game.typos;
-			}
+			handdleWrongKey(currentLetter, itIsAletter);
 		}
 	});
 }
