@@ -48,7 +48,6 @@ function isLetter(c) {
 }
 
 function handleGameOver() {
-	game.wordsCount += game.wordIsCorrect;
 	game.typosCount += game.isAtypo;
 	game.isGameOver = true;
 	clearInterval(timeInterval);
