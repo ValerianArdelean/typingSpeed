@@ -115,6 +115,7 @@ function startGame() {
 		
 		let currentLetter = document.getElementById(game.index);
 		let itIsAletter = isLetter(SENTENCES[game.testType][game.index]);
+		countCorrectWords(itIsAletter);
 		if (event.key === SENTENCES[game.testType][game.index]) {
 			currentLetter.classList.remove("orange", "red");
 			if (game.index < game.sentenceLength - 1) {
@@ -126,7 +127,7 @@ function startGame() {
 		} else {
 			handdleWrongKey(currentLetter, itIsAletter);
 		}
-		countCorrectWords(itIsAletter);
+		
 	});
 }
 
