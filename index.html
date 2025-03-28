@@ -8,36 +8,36 @@
 </head>
 <body class="auto">
 	<header class="center">
-		<h1>Typing Speed Test</h1>
-		<h2> Find out how many letters and words you can type per minute </h2>
+		<h2 class="margin">Typing Speed Test</h1>
+		<h3> Find out how many letters and words you can type per minute </h2>
 	</header>
 
 	<main>
-		
 		<section class="auto center">
-			<p>Please pick a duration to start the test:</p>
+			<p class="margin" >Please pick a duration to start the test:</p>
 			<div class="flex">
-				<button aria-label="Set duration to 1 minute" onclick="createSentence(1)">1</button>
-				<button aria-label="Set duration to 2 minutes" onclick="createSentence(2)">2</button>
-				<button aria-label="Set duration to 3 minutes" onclick="createSentence(3)">3</button>
+				<button class="brick" aria-label="Set duration to 1 minute" onclick="createSentence(1)">1</button>
+				<button class="brick" aria-label="Set duration to 2 minutes" onclick="createSentence(2)">2</button>
+				<button class="brick" aria-label="Set duration to 3 minutes" onclick="createSentence(3)">3</button>
 			</div>
 		</section>
+		
 		<section>
-			<p id="info1" class="center">
+			<p id="info1" class="center margin">
 				The countdown will begin to run with your first key stroke.
 			</p>
 			<section class="flex">
 				<div id="time">
-					60
+					00
 				</div>
 				<div id="sentence"></div>
 			</section>
 		</section>
-		<section>
-			<p id="info2"><b>Note: </b>Typos can be corrected by simply typing the correct letter.</p>
-			<button onclick="restart()">Restart</button>
+		
+		<section class="center">
+			<p id="info2" class="margin"><b>Note: </b>Typos can be corrected by simply typing the correct letter.</p>
+			<button class="brick" onclick="restart()">Restart</button>
 		</section>
-
 	</main>
 	
 	<footer class="center">
