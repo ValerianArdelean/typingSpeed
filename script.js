@@ -14,7 +14,8 @@ let game = {
 	lettersCount : 0,
 	wordsCount : 0,
 	wordIsCorrect : 1,
-	typos : 0,
+	typosCount: 0,
+	isAtypo : 0,
 	timeStarted : false,
 	isGameOver : false,
 	time : document.getElementById("time"),
@@ -47,12 +48,14 @@ function isLetter(c) {
 }
 
 function handleGameOver() {
+	game.wordsCount += game.wordIsCorrect;
+	game.typosCount += game.isAtypo;
 	game.isGameOver = true;
 	clearInterval(timeInterval);
 	game.info1.innerText = "Press restart, or refresh the page!";
 	game.info2.innerText = `Congrats, you typed ${game.wordsCount}
 		correct words out of ${SENTENCES[0][game.testType - 1]}\n
-		You also made ${game.typos} mistake${game.typos !== 1 ? 's' : ''}
+		You also made ${game.typosCount} mistake${game.typosCount !== 1 ? 's' : ''}
 		in punctuation or spacing.`;
 }
 
@@ -100,7 +103,7 @@ function handdleWrongKey(element, itIsAletter) {
 	if (itIsAletter) {
 		game.wordIsCorrect = 0;
 	} else {
-		++game.typos;
+		game.isAtypo = 1;
 	}
 }
 
@@ -118,6 +121,8 @@ function startGame() {
 		countCorrectWords(itIsAletter);
 		if (event.key === SENTENCES[game.testType][game.index]) {
 			currentLetter.classList.remove("orange", "red");
+			game.typosCount += game.isAtypo;
+			game.isAtypo = 0;
 			if (game.index < game.sentenceLength - 1) {
 				handleCorrectKey();
 			} else {
@@ -127,7 +132,6 @@ function startGame() {
 		} else {
 			handdleWrongKey(currentLetter, itIsAletter);
 		}
-		
 	});
 }
 
@@ -138,7 +142,8 @@ function restart() {
 	game.lettersCount = 0;
 	game.wordsCount = 0;
 	game.wordIsCorrect = 1;
-	game.typos = 0;
+	game.typosCount = 0;
+	game.isAtypo = 0;
 	game.timeStarted = false;
 	game.isGameOver = false;
 	clearInterval(timeInterval);
