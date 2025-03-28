@@ -13,7 +13,7 @@ let game = {
 	testType : 0,
 	lettersCount : 0,
 	wordsCount : 0,
-	isCorrect : 1,
+	wordIsCorrect : 1,
 	typos : 0,
 	timeStarted : false,
 	isGameOver : false,
@@ -84,8 +84,8 @@ function countCorrectWords(itIsAletter) {
 		++game.lettersCount;
 	} else if (game.lettersCount) {
 		game.lettersCount = 0;
-		game.wordsCount += game.isCorrect;
-		game.isCorrect = 1;
+		game.wordsCount += game.wordIsCorrect;
+		game.wordIsCorrect = 1;
 	}
 }
 
@@ -98,7 +98,7 @@ function handleCorrectKey() {
 function handdleWrongKey(element, itIsAletter) {
 	element.classList.add("red");
 	if (itIsAletter) {
-		game.isCorrect = 0;
+		game.wordIsCorrect = 0;
 	} else {
 		++game.typos;
 	}
@@ -137,7 +137,7 @@ function restart() {
 	document.getElementById(game.index).classList.add("orange");
 	game.lettersCount = 0;
 	game.wordsCount = 0;
-	game.isCorrect = 1;
+	game.wordIsCorrect = 1;
 	game.typos = 0;
 	game.timeStarted = false;
 	game.isGameOver = false;
