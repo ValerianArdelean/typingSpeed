@@ -103,7 +103,8 @@ function handdleWrongKey(element, itIsAletter) {
 
 function startGame() {
 	document.addEventListener("keydown", function (event) {
-		if (EXCLUDED_KEYS.includes(event.key.toLowerCase()) || game.isGameOver) {
+		if (EXCLUDED_KEYS.includes(event.key.toLowerCase()) ||
+			game.isGameOver || !game.testType) {
 			return;
 		}
 		
