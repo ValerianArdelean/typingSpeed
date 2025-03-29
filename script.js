@@ -25,7 +25,7 @@ let game = {
 }
 
 function createSentence(size) {
-	if (game.isGameOver) {
+	if (game.isGameOver || game.timeStarted) {
 		return;
 	}
 	game.sentenceLength = SENTENCES[size].length;
