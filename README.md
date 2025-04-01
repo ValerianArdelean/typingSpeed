@@ -1,6 +1,5 @@
 # Typing Speed Test Application
 
-##
 The app is live at https://valerianardelean.github.io/typingSpeed/
 
 <img width="1218" alt="screenShot" src="https://github.com/user-attachments/assets/8c01c38d-2af9-4130-b025-e216e8352df8" />
