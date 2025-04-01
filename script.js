@@ -8,6 +8,7 @@ let game = {
 	testType : 0,
 	lettersCount : 0,
 	wordIsCorrect : 1,
+	wordIsWrong : 0,
 	correctWordsCount : 0,
 	wrongWordsCount: 0,
 	typosCount: 0,
@@ -72,9 +73,9 @@ function handleGameOver() {
 	game.isGameOver = true;
 	clearInterval(timeInterval);
 	game.info1.innerText = "Press restart, or refresh the page!";
-	game.info2.innerText = `Congrats, you typed ${game.correctWordsCount}
-		correct words.\n
-		You also made ${game.typosCount} mistake${game.typosCount !== 1 ? 's' : ''}
+	game.info2.innerText = `Congrats, you typed ${game.correctWordsCount} correct words.\n
+		You also mistyped ${game.wrongWordsCount} words
+		and made ${game.typosCount} mistake${game.typosCount !== 1 ? 's' : ''}
 		in punctuation or spacing.`;
 }
 
@@ -108,6 +109,8 @@ function countCorrectWords(itIsAletter) {
 		game.lettersCount = 0;
 		game.correctWordsCount += game.wordIsCorrect;
 		game.wordIsCorrect = 1;
+		game.wrongWordsCount += game.wordIsWrong;
+		game.wordIsWrong = 0;
 	}
 }
 
@@ -121,6 +124,7 @@ function handdleWrongKey(element, itIsAletter) {
 	element.classList.add("red");
 	if (itIsAletter) {
 		game.wordIsCorrect = 0;
+		game.wordIsWrong = 1;
 	} else {
 		game.isAtypo = 1;
 	}
