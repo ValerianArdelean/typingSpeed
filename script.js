@@ -1,25 +1,9 @@
-let SENTENCES = [];
-
-async function fetchSentence(size) {
-	const API_URL = `https://api.quotable.io/random?minLength=${size - 50}&maxLength=${size + 50}`;
-	try {
-		const response = await fetch(API_URL);
-		const data = await response.json();
-		return data.content; // Extracting the sentence
-	} catch (error) {
-		console.error("Error fetching sentence:", error);
-		return "Default fallback sentence in case of an error."; // Fallback in case of API failure
-	}
-}
-
-async function loadSentences() {
-	SENTENCES = await Promise.all([fetchSentence(250), fetchSentence(350), fetchSentence(400)]);
-}
 const EXCLUDED_KEYS = [
 	'shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'
 ];
 
 let game = {
+	sentences : [],
 	index : 0,
 	testType : 0,
 	lettersCount : 0,
@@ -35,25 +19,41 @@ let game = {
 	sentenceLength : 0
 }
 
+async function fetchSentence(size) {
+	const API_URL = `https://api.quotable.io/random?minLength=${size - 50}&maxLength=${size + 50}`;
+	try {
+		const response = await fetch(API_URL);
+		const data = await response.json();
+		return data.content;
+	} catch (error) {
+		console.error("Error fetching sentence:", error);
+		return "Default fallback sentence in case of an error.";
+	}
+}
+
+async function loadSentences() {
+	game.sentences = await Promise.all([fetchSentence(250), fetchSentence(350), fetchSentence(400)]);
+}
+
 async function createSentence(size) {
 	if (game.isGameOver || game.timeStarted) {
 		return;
 	}
 
-	if (SENTENCES.length === 0) {
+	if (game.sentences.length === 0) {
 		await loadSentences();
 	}
 	
 	game.testType = size;
 	game.time.innerText = `${60 * game.testType}`;
-	game.sentenceLength = SENTENCES[game.testType - 1].length;
+	game.sentenceLength = game.sentences[game.testType - 1].length;
 	
 	let sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
 
-	for (let i = 0; i < SENTENCES[size - 1].length; ++i) {
+	for (let i = 0; i < game.sentences[size - 1].length; ++i) {
 		let letter = document.createElement("span");
-		letter.textContent = SENTENCES[size - 1][i];
+		letter.textContent = game.sentences[size - 1][i];
 		letter.id = `${i}`;
 		letter.classList.add("letters");
 		sentenceHolder.appendChild(letter);
@@ -61,8 +61,6 @@ async function createSentence(size) {
 
 	document.getElementById(game.index).classList.add("orange");
 }
-
-window.onload = loadSentences;
 
 function isLetter(c) {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
@@ -74,7 +72,7 @@ function handleGameOver() {
 	clearInterval(timeInterval);
 	game.info1.innerText = "Press restart, or refresh the page!";
 	game.info2.innerText = `Congrats, you typed ${game.wordsCount}
-		correct words out of ${SENTENCES[0][game.testType - 1]}\n
+		correct words.\n
 		You also made ${game.typosCount} mistake${game.typosCount !== 1 ? 's' : ''}
 		in punctuation or spacing.`;
 }
@@ -137,9 +135,9 @@ function startGame() {
 		handleTime();
 		
 		let currentLetter = document.getElementById(game.index);
-		let itIsAletter = isLetter(SENTENCES[game.testType - 1][game.index]);
+		let itIsAletter = isLetter(game.sentences[game.testType - 1][game.index]);
 		countCorrectWords(itIsAletter);
-		if (event.key === SENTENCES[game.testType - 1][game.index]) {
+		if (event.key === game.sentences[game.testType - 1][game.index]) {
 			currentLetter.classList.remove("orange", "red");
 			game.typosCount += game.isAtypo;
 			game.isAtypo = 0;
@@ -172,4 +170,5 @@ function restart() {
 	game.info2.innerText = "Typos can be corrected by simply typing the correct letter.";
 }
 
+window.onload = loadSentences;
 startGame();
