@@ -1,8 +1,7 @@
-const API_URL = "https://api.quotable.io/random?minLength=100&maxLength=200";
-
 let SENTENCES = [];
 
-async function fetchSentence() {
+async function fetchSentence(size) {
+	const API_URL = `https://api.quotable.io/random?minLength=${size - 50}&maxLength=${size + 50}`;
 	try {
 		const response = await fetch(API_URL);
 		const data = await response.json();
@@ -14,7 +13,7 @@ async function fetchSentence() {
 }
 
 async function loadSentences() {
-	SENTENCES = await Promise.all([fetchSentence(), fetchSentence(), fetchSentence()]);
+	SENTENCES = await Promise.all([fetchSentence(250), fetchSentence(350), fetchSentence(400)]);
 }
 const EXCLUDED_KEYS = [
 	'shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'
