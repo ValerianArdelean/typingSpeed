@@ -1,9 +1,21 @@
-const SENTENCES = [
-	[35, 55, 67],
-	"Typing is an essential skill in the modern world, where digital communication is ubiquitous; by practicing regularly, you can greatly improve your speed and accuracy, which will benefit you in both personal and professional contexts.",
-	"The old library, with its towering shelves filled with dusty tomes and ancient manuscripts, was a treasure trove of knowledge; scholars from around the world would travel great distances to study its rare collections, spending hours poring over fragile pages, deciphering faded scripts, and uncovering secrets of the past that had been forgotten for centuries.",
-	"In the heart of the city, amidst the bustling streets and towering skyscrapers, there lies a small park, a hidden gem where nature thrives; here, one can find solace from the chaos, with trees providing shade, flowers blooming in vibrant colors, birds singing cheerfully, and a tranquil pond reflecting the sky above—a perfect place for reflection and relaxation, away from the hustle and bustle of urban life."
-];
+const API_URL = "https://api.quotable.io/random?minLength=100&maxLength=200";
+
+let SENTENCES = [];
+
+async function fetchSentence() {
+	try {
+		const response = await fetch(API_URL);
+		const data = await response.json();
+		return data.content; // Extracting the sentence
+	} catch (error) {
+		console.error("Error fetching sentence:", error);
+		return "Default fallback sentence in case of an error."; // Fallback in case of API failure
+	}
+}
+
+async function loadSentences() {
+	SENTENCES = await Promise.all([fetchSentence(), fetchSentence(), fetchSentence()]);
+}
 const EXCLUDED_KEYS = [
 	'shift', 'tab', 'control', 'alt', 'meta', 'enter', 'capslock', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'
 ];
@@ -24,24 +36,34 @@ let game = {
 	sentenceLength : 0
 }
 
-function createSentence(size) {
+async function createSentence(size) {
 	if (game.isGameOver || game.timeStarted) {
 		return;
 	}
-	game.sentenceLength = SENTENCES[size].length;
+
+	if (SENTENCES.length === 0) {
+		await loadSentences();
+	}
+	
 	game.testType = size;
 	game.time.innerText = `${60 * game.testType}`;
-	sentenceHolder = document.getElementById("sentence");
+	game.sentenceLength = SENTENCES[game.testType - 1].length;
+	
+	let sentenceHolder = document.getElementById("sentence");
 	sentenceHolder.innerHTML = "";
-	for (let i = 0; i < SENTENCES[size].length; ++i) {
+
+	for (let i = 0; i < SENTENCES[size - 1].length; ++i) {
 		let letter = document.createElement("span");
-		letter.textContent = SENTENCES[size][i];
+		letter.textContent = SENTENCES[size - 1][i];
 		letter.id = `${i}`;
 		letter.classList.add("letters");
 		sentenceHolder.appendChild(letter);
 	}
+
 	document.getElementById(game.index).classList.add("orange");
 }
+
+window.onload = loadSentences;
 
 function isLetter(c) {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
@@ -116,9 +138,9 @@ function startGame() {
 		handleTime();
 		
 		let currentLetter = document.getElementById(game.index);
-		let itIsAletter = isLetter(SENTENCES[game.testType][game.index]);
+		let itIsAletter = isLetter(SENTENCES[game.testType - 1][game.index]);
 		countCorrectWords(itIsAletter);
-		if (event.key === SENTENCES[game.testType][game.index]) {
+		if (event.key === SENTENCES[game.testType - 1][game.index]) {
 			currentLetter.classList.remove("orange", "red");
 			game.typosCount += game.isAtypo;
 			game.isAtypo = 0;
