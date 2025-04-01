@@ -167,6 +167,8 @@ function restart() {
 	game.wordIsCorrect = 1;
 	game.typosCount = 0;
 	game.isAtypo = 0;
+	game.wrongWordsCount = 0;
+	game.wordIsWrong = 0;
 	game.timeStarted = false;
 	game.isGameOver = false;
 	clearInterval(timeInterval);
