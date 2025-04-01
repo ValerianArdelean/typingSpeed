@@ -7,8 +7,9 @@ let game = {
 	index : 0,
 	testType : 0,
 	lettersCount : 0,
-	wordsCount : 0,
 	wordIsCorrect : 1,
+	correctWordsCount : 0,
+	wrongWordsCount: 0,
 	typosCount: 0,
 	isAtypo : 0,
 	timeStarted : false,
@@ -71,7 +72,7 @@ function handleGameOver() {
 	game.isGameOver = true;
 	clearInterval(timeInterval);
 	game.info1.innerText = "Press restart, or refresh the page!";
-	game.info2.innerText = `Congrats, you typed ${game.wordsCount}
+	game.info2.innerText = `Congrats, you typed ${game.correctWordsCount}
 		correct words.\n
 		You also made ${game.typosCount} mistake${game.typosCount !== 1 ? 's' : ''}
 		in punctuation or spacing.`;
@@ -105,7 +106,7 @@ function countCorrectWords(itIsAletter) {
 		++game.lettersCount;
 	} else if (game.lettersCount) {
 		game.lettersCount = 0;
-		game.wordsCount += game.wordIsCorrect;
+		game.correctWordsCount += game.wordIsCorrect;
 		game.wordIsCorrect = 1;
 	}
 }
@@ -158,7 +159,7 @@ function restart() {
 	game.index = 0;
 	document.getElementById(game.index).classList.add("orange");
 	game.lettersCount = 0;
-	game.wordsCount = 0;
+	game.correctWordsCount = 0;
 	game.wordIsCorrect = 1;
 	game.typosCount = 0;
 	game.isAtypo = 0;
